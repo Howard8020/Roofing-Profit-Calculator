@@ -6,221 +6,194 @@
 <title>Roofing Profit Calculator</title>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <style>
-  :root { --bg: #1a1a2e; --card: #16213e; --accent: #e94560; --text: #eee; --muted: #889; --green: #2ecc71; }
-  * { box-sizing: border-box; margin: 0; padding: 0; }
-  body { font-family: Segoe UI,system-ui,sans-serif; background: var(--bg); color: var(--text); padding: 20px; }
-  .container { max-width: 1000px; margin: 0 auto; }
-  h1 { text-align: center; margin: 20px 0; font-size: 1.8rem; }
-  .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
-  @media (max-width:768px){ .grid { grid-template-columns:1fr; } }
-  .card { background: var(--card); border-radius: 12px; padding: 20px; }
-  .card h2 { font-size: 1.1rem; margin-bottom: 16px; color: var(--accent); }
-  .form-group { margin-bottom: 14px; }
-  label { display: block; font-size: 0.85rem; color: var(--muted); margin-bottom: 4px; }
-  .form-group input { width: 100%; padding: 8px 12px; border-radius: 6px; border:1px solid #333; background:#0f3460; color:#fff; font-size:0.95rem; }
-  .form-group input:focus { outline:2px solid var(--accent); }
-  .form-group input[type="range"] { padding:0; background:0; }
-  input[type="range"] { -webkit-appearance:none; appearance:none; width:100%; height:6px; border-radius:3px; background:#0f3460; outline:none; }
-  input[type="range"]::-webkit-slider-thumb { -webkit-appearance:none; appearance:none; width:18px; height:18px; border-radius:50%; background:var(--accent); cursor:pointer; }
-  .range-value { text-align:right; font-size:0.9rem; margin-top:2px; }
-  .profit-badge { display:inline-block; padding:4px 12px; border-radius:20px; font-weight:600; font-size:0.85rem; }
-  .badge-green { background:#1a3a2a; color:#2ecc71; }
-  .badge-yellow { background:#3a3a1a; color:#f1c40f; }
-  .badge-red { background:#3a1a1a; color:#e74c3c; }
-  .stat-row { display:flex; justify-content:space-between; padding:8px 0; border-bottom:1px solid #1a1a3a; }
-  .stat-row:last-child { border-bottom:0; }
-  .stat-label { color:var(--muted); }
-  .stat-value { font-weight:600; }
-  .stat-value.green { color:var(--green); }
-  .stat-value.red { color:var(--accent); }
-  .btn { padding:10px 24px; border-radius:8px; border:0; cursor:pointer; font-weight:600; transition:.3s; }
-  .btn-primary { background:var(--accent); color:#fff; }
-  .btn-primary:hover { background:#c0392b; }
-  .btn-secondary { background:#0f3460; color:var(--text); }
-  .btn-secondary:hover { background:#1a4a7a; }
-  .actions { display:flex; gap:10px; margin-top:20px; flex-wrap:wrap; }
-  table { width:100%; border-collapse:collapse; font-size:0.85rem; }
-  th, td { padding:8px 10px; text-align:right; border-bottom:1px solid #1a1a3a; }
-  th { color:var(--accent); font-weight:600; }
-  td:first-child, th:first-child { text-align:left; }
-  tr:hover { background:#1a1a3a; }
-  canvas { max-height: 300px; }
+:root{--bg:#1a1a2e;--card:#16213e;--accent:#e94560;--text:#eee;--muted:#889;--green:#2ecc71;}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:Segoe UI,system-ui,sans-serif;background:var(--bg);color:var(--text);padding:20px}
+.container{max-width:1100px;margin:0 auto}
+h1{text-align:center;margin:20px 0;font-size:1.8rem}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+@media(max-width:768px){.grid2{grid-template-columns:1fr}}
+.card{background:var(--card);border-radius:12px;padding:20px;margin-bottom:20px}
+.card h2{font-size:1.1rem;margin-bottom:16px;color:var(--accent)}
+.form-group{margin-bottom:14px}
+label{display:block;font-size:.85rem;color:var(--muted);margin-bottom:4px}
+.form-group input{width:100%;padding:8px 12px;border-radius:6px;border:1px solid #333;background:#0f3460;color:#fff;font-size:.95rem}
+.form-group input:focus{outline:2px solid var(--accent)}
+.form-group input[type=range]{padding:0;background:0}
+input[type=range]{-webkit-appearance:none;width:100%;height:6px;border-radius:3px;background:#0f3460}
+input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:18px;height:18px;border-radius:50%;background:var(--accent);cursor:pointer}
+.range-value{text-align:right;font-size:.9rem;margin-top:2px;color:var(--accent)}
+.stat-row{display:flex;justify-content:space-between;padding:10px 0;border-bottom:1px solid #1a1a3a}
+.stat-row:last-child{border-bottom:0}
+.stat-label{color:var(--muted)}
+.stat-value{font-weight:600}
+.stat-value.green{color:var(--green)}
+.stat-value.red{color:var(--accent)}
+.btn{padding:10px 24px;border-radius:8px;border:0;cursor:pointer;font-weight:600}
+.btn-primary{background:var(--accent);color:#fff}
+.btn-secondary{background:#0f3460;color:var(--text)}
+.btn-secondary:hover{background:#1a4a7a}
+.actions{display:flex;gap:10px;margin-top:20px;flex-wrap:wrap;justify-content:center}
+table{width:100%;border-collapse:collapse;font-size:.85rem}
+th,td{padding:8px 10px;text-align:right;border-bottom:1px solid #1a1a3a}
+th{color:var(--accent);font-weight:600}
+td:first-child,th:first-child{text-align:left}
+tr:hover{background:#1a1a3a}
+.total-row td{font-weight:700;border-top:2px solid var(--accent)}
+canvas{max-height:300px}
+hr{border:0;height:1px;background:linear-gradient(90deg,transparent,var(--accent),transparent);margin:20px 0}
+.oh-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+@media(max-width:600px){.oh-grid{grid-template-columns:1fr}}
+.oh-item{background:#0f3460;border-radius:8px;padding:10px 14px}
+.oh-item label{font-size:.8rem}
+.oh-item input{width:100%;padding:6px 10px;border-radius:5px;border:1px solid #333;background:#16213e;color:#fff;font-size:.9rem}
+.net-box{background:linear-gradient(135deg,#1a3a2a,#163a2a);border:2px solid var(--green);border-radius:12px;padding:20px;text-align:center;margin-bottom:20px}
+.net-box .lbl{color:#6a9;font-size:.9rem}
+.net-box .amt{font-size:2.5rem;font-weight:700;color:var(--green)}
+.net-box .pct{font-size:1.3rem;color:#4a9}
 </style>
 </head>
 <body>
 <div class="container">
-  <h1>🛠️ Roofing Profit Calculator</h1>
-  <div class="grid">
-    <div class="card">
-      <h2>📋 Inputs</h2>
-      <div class="form-group">
-        <label>Job Price (per square)</label>
-        <input type="number" id="jobPrice" value="600" step="10" min="100">
-      </div>
-      <div class="form-group">
-        <label>Material Cost (per square)</label>
-        <input type="number" id="materialCost" value="200" step="5" min="0">
-      </div>
-      <div class="form-group">
-        <label>Labor Cost (per square)</label>
-        <input type="number" id="laborCost" value="150" step="5" min="0">
-      </div>
-      <div class="form-group">
-        <label>Overhead (%%)</label>
-        <input type="range" id="overhead" min="5" max="40" value="15">
-<div class="range-value" id="overheadVal">15%%</div>
-      </div>
-      <div class="form-group">
-        <label>Number of Squares</label>
-        <input type="range" id="squares" min="5" max="100" value="30">
-        <div class="range-value" id="squaresVal">30</div>
-      </div>
-      <div class="actions">
-        <button class="btn btn-primary" onclick="calculate()">Calculate</button>
-        <button class="btn btn-secondary" onclick="resetForm()">Reset</button>
-      </div>
-    </div>
-    <div class="card">
-      <h2>📊 Results</h2>
-      <div id="results">
-        <div class="stat-row"><span class="stat-label">Revenue</span><span class="stat-value" id="revVal">$18,000</span></div>
-        <div class="stat-row"><span class="stat-label">Total Cost</span><span class="stat-value" id="costVal">$13,950</span></div>
-        <div class="stat-row"><span class="stat-label">Gross Profit</span><span class="stat-value green" id="profitVal">$4,050</span></div>
-        <div class="stat-row"><span class="stat-label">Profit Margin</span><span class="stat-value" id="marginVal">22.5%%</span></div>
-        <div class="stat-row"><span class="stat-label">Profit per Square</span><span class="stat-value" id="ppsVal">$135</span></div>
-        <div class="stat-row"><span class="stat-label">Breakeven Volume</span><span class="stat-value" id="beVal">12 sq</span></div>
-      </div>
-      <div style="margin-top:14px" id="profitBadge"></div>
-    </div>
-  </div>
-  <div class="card" style="margin-top:20px">
-    <h2>📈 Profit Analysis</h2>
-    <canvas id="profitChart"></canvas>
-  </div>
-  <div class="card" style="margin-top:20px">
-    <h2>📅 Annual Projection</h2>
-    <div style="overflow-x:auto"><table id="annualTable"></table></div>
-  </div>
-  <div class="actions" style="justify-content:center">
-    <button class="btn btn-secondary" onclick="downloadReport()">📥 Download Report</button>
-  </div>
+<h1>🛠️ Roofing Profit Calculator</h1>
+
+<div class="grid2">
+<div class="card">
+<h2>📋 Per-Square Job Pricing</h2>
+<div class="form-group"><label>Job Price (per sq)</label><input type="number" id="jobPrice" value="600" step="10"></div>
+<div class="form-group"><label>Material Cost (per sq)</label><input type="number" id="materialCost" value="200" step="5"></div>
+<div class="form-group"><label>Labor Cost (per sq)</label><input type="number" id="laborCost" value="150" step="5"></div>
+<div class="form-group"><label>Number of Squares</label><input type="range" id="squares" min="5" max="100" value="30"><div class="range-value" id="squaresVal">30</div></div>
+<hr>
+<div class="form-group"><label>Estimated Jobs Per Year</label><input type="range" id="jobsPerYear" min="1" max="50" value="20"><div class="range-value" id="jobsPerYearVal">20</div></div>
 </div>
+
+<div class="card">
+<h2>📊 Per-Job Results</h2>
+<div class="stat-row"><span class="stat-label">Revenue</span><span class="stat-value" id="revVal">$18,000</span></div>
+<div class="stat-row"><span class="stat-label">Direct Cost</span><span class="stat-value" id="costVal">$10,500</span></div>
+<div class="stat-row"><span class="stat-label"><strong>Gross Profit</strong></span><span class="stat-value green" id="gpVal"><strong>$7,500</strong></span></div>
+<div class="stat-row"><span class="stat-label">Gross Margin</span><span class="stat-value" id="marginVal">41.7%</span></div>
+<div class="stat-row"><span class="stat-label">GP per Sq</span><span class="stat-value" id="ppsVal">$250</span></div>
+</div>
+</div>
+
+<div class="card">
+<h2>🏢 Monthly Overhead Costs</h2>
+<div class="oh-grid">
+<div class="oh-item"><label>Manager Base Salary</label><input type="number" id="baseSalary" value="3600" step="50"></div>
+<div class="oh-item"><label>Manager Bonus (% of Volume)</label><input type="number" id="bonusPercent" value="3" step="0.1" max="100"></div>
+<div class="oh-item"><label>Vehicle Expense</label><input type="number" id="vehicle" value="350" step="10"></div>
+<div class="oh-item"><label>Gas</label><input type="number" id="gas" value="300" step="10"></div>
+<div class="oh-item"><label>Office Rent</label><input type="number" id="officeRent" value="500" step="10"></div>
+<div class="oh-item"><label>Office Expense</label><input type="number" id="officeExp" value="150" step="5"></div>
+<div class="oh-item"><label>Phone</label><input type="number" id="phone" value="125" step="5"></div>
+</div>
+</div>
+
+<div class="net-box" id="netBox">
+<div class="lbl">Projected Annual Net Profit</div>
+<div class="amt" id="netProfitVal">$130,800</div>
+<div class="pct" id="netPctVal">36.3% Net Profit Margin</div>
+</div>
+
+<div class="grid2">
+<div class="card">
+<h2>📈 Profit Analysis</h2>
+<canvas id="profitChart"></canvas>
+</div>
+<div class="card">
+<h2>📅 Overhead Breakdown</h2>
+<table><thead><tr><th>Item</th><th>Monthly</th><th>Annual</th></tr></thead>
+<tbody id="ohBody"></tbody></table>
+<div style="margin-top:15px;text-align:center"><span style="color:var(--muted)">Annual Overhead: </span><span style="color:var(--accent);font-weight:700;font-size:1.2rem" id="annualOhVal">$90,300</span></div>
+</div>
+</div>
+
+<div class="card">
+<h2>📅 Annual Scenario Comparison</h2>
+<div style="overflow-x:auto"><table><thead><tr><th>Volume</th><th>Revenue</th><th>Gross Profit</th><th>Overhead</th><th>Net Profit</th><th>Net %</th></tr></thead>
+<tbody id="annualBody"></tbody></table></div>
+</div>
+
+<div class="actions">
+<button class="btn btn-secondary" onclick="downloadReport()">📥 Download Report</button>
+<button class="btn btn-secondary" onclick="resetForm()">🔄 Reset to Defaults</button>
+</div>
+</div>
+
 <script>
-let chart = null;
-function $(id){return document.getElementById(id);}
-function calculate(){
-  const jp = parseFloat($('jobPrice').value) || 0;
-  const mc = parseFloat($('materialCost').value) || 0;
-  const lc = parseFloat($('laborCost').value) || 0;
-  const oh = parseFloat($('overhead').value) / 100;
-  const sq = parseInt($('squares').value) || 0;
-  const laborRate = lc;
-  const overheadRate = oh;
-  const revenue = jp * sq;
-  const totalCost = (mc + laborRate) * sq * (1 + overheadRate);
-  const grossProfit = revenue - totalCost;
-  const margin = revenue > 0 ? (grossProfit / revenue) * 100 : 0;
-  const pps = sq > 0 ? grossProfit / sq : 0;
-  const varCostPerSq = (mc + laborRate) * (1 + overheadRate);
-  const beVol = varCostPerSq > 0 ? jp / varCostPerSq : 1;
-  const fixedCost = 0;
-  $('revVal').textContent = '$' + revenue.toLocaleString();
-  $('costVal').textContent = '$' + totalCost.toLocaleString();
-  const profitEl = $('profitVal');
-  profitEl.textContent = '$' + grossProfit.toLocaleString();
-  profitEl.className = 'stat-value ' + (grossProfit >= 0 ? 'green' : 'red');
-  $('marginVal').textContent = margin.toFixed(1) + '%';
-  $('ppsVal').textContent = '$' + pps.toFixed(0);
-  $('beVal').textContent = Math.ceil(beVol) + ' sq';
-  const badge = $('profitBadge');
-  if(margin >= 25) badge.innerHTML = '<span class="profit-badge badge-green">✅ Excellent — high margin</span>';
-  else if(margin >= 15) badge.innerHTML = '<span class="profit-badge badge-yellow">⚠️ Decent — room to improve</span>';
-  else badge.innerHTML = '<span class="profit-badge badge-red">❌ Low margin — review pricing</span>';
-  updateChart(jp, varCostPerSq, sq);
-  updateTable(jp, varCostPerSq, sq);
+let chart;
+const $=id=>document.getElementById(id);
+const fmt=n=>'$'+Math.round(n).toLocaleString('en-US');
+
+function calc(){
+const jp=+$('jobPrice').value||0,mc=+$('materialCost').value||0,lc=+$('laborCost').value||0;
+const sq=+$('squares').value||1,jpy=+$('jobsPerYear').value||1;
+const rev=jp*sq,dc=(mc+lc)*sq,gp=rev-dc,margin=rev>0?gp/rev*100:0,pps=sq>0?gp/sq:0;
+$('revVal').textContent=fmt(rev);$('costVal').textContent=fmt(dc);$('gpVal').textContent=fmt(gp);
+$('marginVal').textContent=margin.toFixed(1)+'%';$('ppsVal').textContent='$'+pps.toFixed(0);
+
+const bs=+$('baseSalary').value||0,bp=+$('bonusPercent').value||0;
+const veh=+$('vehicle').value||0,gas=+$('gas').value||0,rent=+$('officeRent').value||0;
+const off=+$('officeExp').value||0,ph=+$('phone').value||0;
+const aRev=rev*jpy,aGP=gp*jpy,mBonus=aRev*bp/100/12;
+const mOh=bs+mBonus+veh+gas+rent+off+ph,aOh=mOh*12,np=aGP-aOh,npPct=aRev>0?np/aRev*100:0;
+
+$('netProfitVal').textContent=fmt(np);
+$('netPctVal').textContent=npPct.toFixed(1)+'% Net Profit Margin';
+$('netBox').style.borderColor=np>=0?'#2ecc71':'#e74c3c';
+$('netProfitVal').style.color=np>=0?'#2ecc71':'#e74c3c';
+
+const items=[['Base Salary',bs],['Bonus (avg)',mBonus],['Vehicle',veh],['Gas',gas],['Office Rent',rent],['Office Expense',off],['Phone',ph]];
+let h='',st=0;
+items.forEach(([n,v])=>{st+=v;h+=`<tr><td>${n}</td><td>${fmt(v)}</td><td>${fmt(v*12)}</td></tr>`});
+h+=`<tr class="total-row"><td><strong>Total</strong></td><td><strong>${fmt(st)}</strong></td><td><strong>${fmt(st*12)}</strong></td></tr>`;
+$('ohBody').innerHTML=h;$('annualOhVal').textContent=fmt(aOh);
+
+const vols=[500000,750000,1000000,1500000,2000000,2500000,3000000];
+let ah='';
+vols.forEach(v=>{const ge=v*margin/100,oe=aRev>0?aOh*(v/aRev):aOh,ne=ge-oe,cp=v>0?ne/v*100:0;
+ah+=`<tr><td>$${(v/1e6).toFixed(1)}M</td><td>${fmt(v)}</td><td>${fmt(ge)}</td><td>${fmt(oe)}</td><td style="color:${ne>=0?'#2ecc71':'#e74c3c'};font-weight:600">${fmt(ne)}</td><td>${cp.toFixed(1)}%</td></tr>`});
+$('annualBody').innerHTML=ah;
+
+const ctx=$('profitChart').getContext('2d');
+if(chart)chart.destroy();
+const lb=Array.from({length:sq+1},(_,i)=>i);
+chart=new Chart(ctx,{type:'line',data:{labels:lb,datasets:[
+{label:'Revenue',data:lb.map(s=>s*jp),borderColor:'#3498db',tension:.3,fill:false},
+{label:'Direct Cost',data:lb.map(s=>s*(mc+lc)),borderColor:'#e74c3c',tension:.3,fill:false},
+{label:'Gross Profit',data:lb.map(s=>s*(jp-mc-lc)),borderColor:'#2ecc71',tension:.3,fill:false}
+]},options:{responsive:true,plugins:{legend:{labels:{color:'#eee'}}},scales:{x:{ticks:{color:'#889'},grid:{color:'#1a1a3a'}},y:{ticks:{color:'#889',callback:v=>'$'+v.toLocaleString()},grid:{color:'#1a1a3a'}}}}});
 }
-function updateChart(jp, vc, sq){
-  const labels = Array.from({length: sq+1}, (_,i) => i);
-  const rev = labels.map(s => s * jp);
-  const cost = labels.map(s => s * vc);
-  const profit = labels.map(s => s * jp - s * vc);
-  const ctx = $('profitChart').getContext('2d');
-  if(chart) chart.destroy();
-  chart = new Chart(ctx, {
-    type: 'line',
-    data: {
-      labels,
-      datasets: [
-{ label: 'Revenue', data: rev, borderColor: '#3498db', tension:0.3, fill:false },
-        { label: 'Cost', data: cost, borderColor: '#e74c3c', tension:0.3, fill:false },
-        { label: 'Profit', data: profit, borderColor: '#2ecc71', tension:0.3, fill:false }
-      ]
-    },
-    options: {
-      responsive: true,
-      maintainAspectRatio: true,
-      plugins: { legend: { labels: { color:'#eee' } } },
-      scales: {
-        x: { ticks: { color:'#889' }, grid: { color:'#1a1a3a' } },
-        y: { ticks: { color:'#889', callback: v=>'$'+v.toLocaleString() }, grid: { color:'#1a1a3a' } }
-      }
-    }
-  });
-}
-function updateTable(jp, vc, sq){
-  const tbody = $('annualTable');
-  let html = '<thead><tr><th>Month</th><th>Sq Installed</th><th>Revenue</th><th>Cost</th><th>Profit</th><th>Margin</th></tr></thead><tbody>';
-  for(let m=1; m<=12; m++){
-    const s = sq * m;
-    const r = s * jp;
-    const c = s * vc;
-    const p = r - c;
-    const mg = r > 0 ? (p/r)*100 : 0;
-    html += `<tr><td>Month ${m}</td><td>${s}</td><td>$${r.toLocaleString()}</td><td>$${c.toLocaleString()}</td><td style="color:${p>=0?'#2ecc71':'#e74c3c'}">$${p.toLocaleString()}</td><td>${mg.toFixed(1)}%</td></tr>`;
-  }
-  html += '</tbody>';
-  tbody.innerHTML = html;
-}
+
 function downloadReport(){
-  const jp = parseFloat($('jobPrice').value) || 0;
-  const mc = parseFloat($('materialCost').value) || 0;
-  const lc = parseFloat($('laborCost').value) || 0;
-  const oh = parseFloat($('overhead').value) / 100;
-  const sq = parseInt($('squares').value) || 0;
-  const revenue = jp * sq;
-  const totalCost = (mc + lc) * sq * (1 + oh);
-  const profit = revenue - totalCost;
-  const margin = revenue > 0 ? ((profit / revenue) * 100).toFixed(1) : '0.0';
-  const line = '─'.repeat(50);
-  let txt = `${line}\n  ROOFING PROFIT CALCULATOR — REPORT\n${line}\n\n`;
-  txt += `Job Price:        $${jp}/sq\nMaterial Cost:    $${mc}/sq\nLabor Cost:       $${lc}/sq\nOverhead:         ${oh*100}%\nSquares:          ${sq}\n\n${line}\n`;
-  txt += `Revenue:          $${revenue.toLocaleString()}\nTotal Cost:       $${totalCost.toLocaleString()}\nGross Profit:     $${profit.toLocaleString()}\nProfit Margin:    ${margin}%\nProfit/Sq:        $${(profit/sq).toFixed(0)}\n${line}\n\nGenerated: ${new Date().toLocaleString()}`;
-  const blob = new Blob([txt], {type:'text/plain'});
-  const a = document.createElement('a');
-  a.href = URL.createObjectURL(blob);
-  a.download = 'roofing-profit-report.txt';
-  a.click();
+const jp=+$('jobPrice').value,mc=+$('materialCost').value,lc=+$('laborCost').value,sq=+$('squares').value,jpy=+$('jobsPerYear').value;
+const rev=jp*sq,gp=rev-(mc+lc)*sq,aRev=rev*jpy,aGP=gp*jpy,margin=rev>0?gp/rev*100:0;
+const bs=+$('baseSalary').value,bp=+$('bonusPercent').value,veh=+$('vehicle').value,gas=+$('gas').value,rent=+$('officeRent').value,off=+$('officeExp').value,ph=+$('phone').value;
+const mBonus=aRev*bp/100/12,mOh=bs+mBonus+veh+gas+rent+off+ph,aOh=mOh*12,np=aGP-aOh,npPct=aRev>0?np/aRev*100:0;
+const L='─'.repeat(55);
+let t=`${L}\n  ROOFING PROFIT CALCULATOR — REPORT\n${L}\n\n`;
+t+=`PER-JOB\n${L.slice(15)}\nPrice: $${jp}/sq, ${sq} sq\nMaterial: $${mc}/sq, Labor: $${lc}/sq\nRevenue: $${rev.toLocaleString()}\nGross Profit: $${gp.toLocaleString()} (${margin.toFixed(1)}%)\n\n`;
+t+=`ANNUAL (${jpy} jobs/yr)\n${L.slice(15)}\nRevenue: $${aRev.toLocaleString()}\nGross Profit: $${aGP.toLocaleString()}\n\n`;
+t+=`OVERHEAD (monthly)\n${L.slice(15)}\nBase Salary: $${bs.toLocaleString()}\nBonus (avg): $${Math.round(mBonus).toLocaleString()}\nVehicle: $${veh.toLocaleString()}\nGas: $${gas.toLocaleString()}\nRent: $${rent.toLocaleString()}\nOffice: $${off.toLocaleString()}\nPhone: $${ph.toLocaleString()}\nTotal Monthly: $${Math.round(mOh).toLocaleString()}\nAnnual Overhead: $${Math.round(aOh).toLocaleString()}\n\n`;
+t+=`NET PROFIT\n${L.slice(15)}\nNet Profit: $${Math.round(np).toLocaleString()}\nNet Margin: ${npPct.toFixed(1)}%\n${L}\n${new Date().toLocaleString()}`;
+const b=new Blob([t],{type:'text/plain'}),a=document.createElement('a');
+a.href=URL.createObjectURL(b);a.download='roofing-profit-report.txt';a.click();
 }
+
 function resetForm(){
-  $('jobPrice').value = 600;
-  $('materialCost').value = 200;
-  $('laborCost').value = 150;
-  $('overhead').value = 15;
-  $('squares').value = 30;
-  $('overheadVal').textContent = '15%';
-  $('squaresVal').textContent = '30';
-  calculate();
+$('jobPrice').value=600;$('materialCost').value=200;$('laborCost').value=150;
+$('squares').value=30;$('jobsPerYear').value=20;
+$('baseSalary').value=3600;$('bonusPercent').value=3;$('vehicle').value=350;
+$('gas').value=300;$('officeRent').value=500;$('officeExp').value=150;$('phone').value=125;
+$('squaresVal').textContent='30';$('jobsPerYearVal').textContent='20';calc();
 }
-document.querySelectorAll('input[type="range"]').forEach(el => {
-  el.addEventListener('input', function(){
-    const lbl = this.id + 'Val';
-    if(document.getElementById(lbl)) document.getElementById(lbl).textContent = this.id==='overhead' ? this.value+'%' : this.value;
-    calculate();
-  });
-});
-document.querySelectorAll('input[type="number"]').forEach(el => el.addEventListener('input', calculate));
-calculate();
+document.querySelectorAll('input[type=range]').forEach(el=>{el.addEventListener('input',function(){const l=this.id+'Val',e=document.getElementById(l);if(e)e.textContent=this.value;calc()})});
+document.querySelectorAll('input[type=number]').forEach(el=>el.addEventListener('input',calc));
+calc();
 </script>
 </body>
 </html>
+
 
